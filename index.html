@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Estudio de frases · JP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-elevated: #111827;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.12);
+      --text: #e5e7eb;
+      --text-muted: #9ca3af;
+      --border-soft: #1f2937;
+      --danger: #f97373;
+      --radius-lg: 18px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1f2937 0, #020617 55%, #000 100%);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      padding: 16px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 480px;
+      margin: auto;
+      background: linear-gradient(160deg, #020617 0, #020617 50%, #050816 100%);
+      border-radius: 24px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      padding: 18px 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 0;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    h1 {
+      font-size: 1.1rem;
+      margin: 0;
+      letter-spacing: 0.02em;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--text-muted);
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(8px);
+      white-space: nowrap;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    /* Pantalla inicial */
+
+    .section {
+      background: radial-gradient(circle at top left, var(--accent-soft), transparent 60%),
+                  var(--bg-elevated);
+      border-radius: var(--radius-lg);
+      padding: 10px 10px 12px;
+      border: 1px solid var(--border-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+    }
+
+    .section-title span {
+      color: var(--accent);
+    }
+
+    .pill-button {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease,
+        transform 0.05s ease;
+    }
+
+    .pill-button span {
+      font-size: 0.9em;
+    }
+
+    .pill-button.is-active {
+      background: rgba(56, 189, 248, 0.1);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .pill-button:active {
+      transform: scale(0.97);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .toggle-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(31, 41, 55, 1);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      padding: 8px 4px;
+      text-align: center;
+      cursor: pointer;
+      opacity: 0.4;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease,
+        opacity 0.15s ease, transform 0.05s ease;
+      user-select: none;
+    }
+
+    .toggle-btn.is-active {
+      opacity: 1;
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(15, 23, 42, 0.95);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.09);
+    }
+
+    .toggle-btn:active {
+      transform: scale(0.97);
+    }
+
+    .section-footer {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .counter {
+      opacity: 0.9;
+    }
+
+    .hint {
+      opacity: 0.7;
+      text-align: right;
+    }
+
+    .modes {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .mode-btn {
+      flex: 1 1 calc(50% - 4px);
+      border-radius: 999px;
+      border: 1px solid rgba(31, 41, 55, 1);
+      background: linear-gradient(120deg, #0f172a, #020617);
+      color: var(--text);
+      font-size: 0.85rem;
+      padding: 9px 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease,
+        opacity 0.15s ease, transform 0.05s ease;
+    }
+
+    .mode-btn span {
+      font-size: 0.9em;
+      opacity: 0.8;
+    }
+
+    .mode-btn.is-primary {
+      border-color: var(--accent);
+      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.18), #020617 55%);
+    }
+
+    .mode-btn.is-disabled {
+      opacity: 0.35;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .mode-btn:active:not(.is-disabled) {
+      transform: scale(0.97);
+    }
+
+    .status-bar {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 2px;
+    }
+
+    .status-main {
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
+    }
+
+    .toast {
+      margin-top: 4px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: left;
+      min-height: 1.2em;
+    }
+
+    /* Pantalla de estudio */
+
+    #study-screen {
+      display: none;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .study-outer-card {
+      flex: 1;
+      background: radial-gradient(circle at top left, var(--accent-soft), transparent 60%),
+                  var(--bg-elevated);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+      padding: 12px 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 0;
+    }
+
+    .study-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+
+    .home-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-muted);
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
+      flex-shrink: 0;
+    }
+
+    .home-btn:active {
+      transform: scale(0.95);
+    }
+
+    .progress-block {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-left: 8px;
+    }
+
+    .progress-bar-outer {
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: #020617;
+      border: 1px solid rgba(30, 64, 175, 0.6);
+      overflow: hidden;
+    }
+
+    .progress-bar-inner {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #38bdf8, #22c55e);
+      transition: width 0.18s ease-out;
+    }
+
+    .progress-text {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-align: right;
+    }
+
+    .study-middle {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 2px 10px;
+      min-height: 0;
+    }
+
+    .study-inner-card {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: calc(var(--radius-lg) - 4px);
+      border: 1px solid var(--border-soft);
+      padding: 16px 12px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+      min-height: 120px;
+    }
+
+    .study-main {
+      font-size: 1.3rem;
+      line-height: 1.6;
+      word-break: keep-all;
+    }
+
+    .study-sub {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      min-height: 1.2em;
+    }
+
+    .audio-btn {
+      margin-top: 12px;
+      align-self: center;
+      font-size: 0.8rem;
+    }
+
+    .study-bottom {
+      padding-top: 6px;
+    }
+
+    .primary-bottom-btn {
+      width: 100%;
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.32), #020617 60%);
+      color: var(--text);
+      padding: 11px 0;
+      font-size: 0.95rem;
+      cursor: pointer;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.9);
+      transition: background 0.15s ease, transform 0.05s ease;
+    }
+
+    .primary-bottom-btn:active {
+      transform: scale(0.97);
+    }
+
+    .result-buttons {
+      display: none;
+      width: 100%;
+      gap: 8px;
+    }
+
+    .correct-btn,
+    .wrong-btn {
+      flex: 1;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      padding: 10px 0;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.45);
+      transition: transform 0.05s ease, opacity 0.15s ease;
+    }
+
+    .correct-btn {
+      background: rgba(34, 197, 94, 0.12);
+      border-color: rgba(34, 197, 94, 0.7);
+      color: #bbf7d0;
+    }
+
+    .wrong-btn {
+      background: rgba(248, 113, 113, 0.12);
+      border-color: rgba(248, 113, 113, 0.7);
+      color: #fecaca;
+    }
+
+    .correct-btn:active,
+    .wrong-btn:active {
+      transform: scale(0.97);
+    }
+
+    .finished-text-main {
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="title-block">
+        <h1>Estudio de frases · JP</h1>
+        <p class="subtitle">Elige verbos, formas y modo de estudio.</p>
+      </div>
+      <div class="badge">0.0</div>
+    </header>
+
+    <!-- Pantalla inicial -->
+    <main id="setup-screen">
+      <!-- Apartado 1: Verbos -->
+      <section class="section" id="section-verbs">
+        <div class="section-header">
+          <div class="section-title">
+            <span>1.</span> Verbos
+          </div>
+          <button
+            id="btn-select-all-verbs"
+            class="pill-button"
+            type="button"
+          >
+            <span>Seleccionar todos</span>
+          </button>
+        </div>
+        <div class="grid" id="verbs-grid"></div>
+        <div class="section-footer" style="display: none;">
+          <div class="counter">
+            Seleccionados: <span id="verbs-count">0</span>
+          </div>
+          <div class="hint">
+            Toca para activar/desactivar. <br />“Seleccionar todos” alterna todo el grupo.
+          </div>
+        </div>
+      </section>
+
+      <!-- Apartado 2: Formas verbales -->
+      <section class="section" id="section-forms">
+        <div class="section-header">
+          <div class="section-title">
+            <span>2.</span> Formas verbales
+          </div>
+          <button
+            id="btn-select-all-forms"
+            class="pill-button"
+            type="button"
+          >
+            <span>Seleccionar todas</span>
+          </button>
+        </div>
+        <div class="grid" id="forms-grid"></div>
+        <div class="section-footer" style="display: none;">
+          <div class="counter">
+            Seleccionadas: <span id="forms-count">0</span>
+          </div>
+          <div class="hint">
+            Combina verbos + formas para definir tu lista de estudio.
+          </div>
+        </div>
+      </section>
+
+      <!-- Apartado 3: Modo de estudio -->
+      <section class="section" id="section-modes">
+        <div class="section-header">
+          <div class="section-title">
+            <span>3.</span> Modo de estudio
+          </div>
+        </div>
+        <div class="modes">
+            <button
+              class="mode-btn is-disabled"
+              id="mode-traducir"
+              type="button"
+              disabled
+            >
+              TRADUCIR
+            </button>
+          <button
+            class="mode-btn is-disabled"
+            id="mode-escuchar"
+            type="button"
+            disabled
+          >
+            ESCUCHAR
+          </button>
+          <button
+            class="mode-btn is-disabled"
+            id="mode-leer"
+            type="button"
+            disabled
+          >
+            LEER
+          </button>
+          <button
+            class="mode-btn is-disabled"
+            id="mode-automatico"
+            type="button"
+            disabled
+          >
+            AUTOMÁTICO
+          </button>
+        </div>
+        <div class="status-bar" id="status-bar">
+          <div class="status-main">
+            <span class="status-dot"></span>
+            <span id="status-text">Selecciona al menos 1 verbo y 1 forma.</span>
+          </div>
+          <div>
+            <span id="status-counter"></span>
+          </div>
+        </div>
+        <div class="toast" id="toast"></div>
+      </section>
+    </main>
+
+    <!-- Pantalla de estudio -->
+    <main id="study-screen">
+      <div class="study-outer-card">
+        <div class="study-top">
+          <button id="btn-home" class="home-btn" type="button" title="Volver al inicio">
+            🏠
+          </button>
+          <div class="progress-block">
+            <div class="progress-bar-outer">
+              <div id="progress-bar" class="progress-bar-inner"></div>
+            </div>
+            <div id="progress-text" class="progress-text">0 / 0</div>
+          </div>
+        </div>
+
+        <div class="study-middle">
+          <div class="study-inner-card">
+            <div id="study-main" class="study-main"></div>
+            <div id="study-sub" class="study-sub"></div>
+            <button
+              id="btn-repeat-audio"
+              class="pill-button audio-btn"
+              type="button"
+              style="display: none;"
+            >
+              Repetir audio
+            </button>
+          </div>
+        </div>
+
+        <div class="study-bottom">
+          <button
+            id="btn-reveal"
+            class="primary-bottom-btn"
+            type="button"
+          >
+            Revelar
+          </button>
+
+          <div id="result-buttons" class="result-buttons">
+            <button id="btn-correct" class="correct-btn" type="button">
+              ✓ He acertado
+            </button>
+            <button id="btn-wrong" class="wrong-btn" type="button">
+              ✕ No la sabía
+            </button>
+          </div>
+
+          <button
+            id="btn-finish-home"
+            class="primary-bottom-btn"
+            type="button"
+            style="display: none;"
+          >
+            Volver al inicio
+          </button>
+        </div>
+      </div>
+
+      <audio id="audio-player"></audio>
+    </main>
+  </div>
+
+  <script>
+    // ========== Datos (usa aquí tu tabla real) ==========
+      const frases = [
+{jp:"今日は一時から会議があります", es:"Hoy tengo una reunión a la una", verbo: "N5", forma: "1-10", audio: "audios/001.mp3"},
+{jp:"今、忙しいですから、またあとで電話してください", es:"Estoy ocupado ahora. Llame otra vez más tarde, por favor", verbo: "N5", forma: "1-10", audio: "audios/002.mp3"},
+{jp:"机の上にリンゴが一つあります", es:"Hay una manzana en la mesa", verbo: "N5", forma: "1-10", audio: "audios/003.mp3"},
+{jp:"毎朝七時に起きます", es:"Me despierto a las 7 todas las mañanas", verbo: "N5", forma: "1-10", audio: "audios/004.mp3"},
+{jp:"娘は七歳です", es:"Mi hija tiene 7 años", verbo: "N5", forma: "1-10", audio: "audios/005.mp3"},
+{jp:"わたしは九週間旅行へ行きました", es:"Fui a un viaje de nueve semanas", verbo: "N5", forma: "1-10", audio: "audios/006.mp3"},
+{jp:"わたしは昨日九時間勉強しました", es:"Estudié ayer nueve horas", verbo: "N5", forma: "1-10", audio: "audios/007.mp3"},
+{jp:"彼は二年前日本に行きました", es:"Él fue a Japón hace dos años", verbo: "N5", forma: "1-10", audio: "audios/008.mp3"},
+{jp:"あの人は背がとても高い", es:"Esa persona es muy alta", verbo: "N5", forma: "1-10", audio: "audios/009.mp3"},
+{jp:"わたしは朝八時から働きます", es:"Yo trabajo desde las ocho de la mañana", verbo: "N5", forma: "1-10", audio: "audios/010.mp3"},
+{jp:"わたしの学校は先生が十人います", es:"Mi escuela tiene diez profesores", verbo: "N5", forma: "11-20", audio: "audios/011.mp3"},
+{jp:"私は兄が一人います", es:"Tengo un hermano", verbo: "N5", forma: "11-20", audio: "audios/012.mp3"},
+{jp:"来週一人で京都へ行きます", es:"Voy a ir a Kyoto solo la próxima semana", verbo: "N5", forma: "11-20", audio: "audios/013.mp3"},
+{jp:"みかんを七つ買いました", es:"He comprado siete mandarinas", verbo: "N5", forma: "11-20", audio: "audios/014.mp3"},
+{jp:"この時計は一万円です", es:"Este reloj cuesta diez mil yenes", verbo: "N5", forma: "11-20", audio: "audios/015.mp3"},
+{jp:"それは全部で三千円です", es:"Son tres mil yenes en total", verbo: "N5", forma: "11-20", audio: "audios/016.mp3"},
+{jp:"彼はテーブルの上に本を置きました", es:"Puso el libro sobre la mesa", verbo: "N5", forma: "11-20", audio: "audios/017.mp3"},
+{jp:"机の下に猫がいます", es:"Hay un gato debajo de la mesa", verbo: "N5", forma: "11-20", audio: "audios/018.mp3"},
+{jp:"りんごを九つください", es:"Nueve manzanas, por favor", verbo: "N5", forma: "11-20", audio: "audios/019.mp3"},
+{jp:"私はカメラを二つ持っている", es:"Tengo dos cámaras", verbo: "N5", forma: "11-20", audio: "audios/020.mp3"},
+{jp:"彼は部屋に入りました", es:"Entró en la habitación", verbo: "N5", forma: "21-30", audio: "audios/021.mp3"},
+{jp:"ケーキを八つに切りましょう", es:"Vamos a cortar el pastel en ocho partes", verbo: "N5", forma: "21-30", audio: "audios/022.mp3"},
+{jp:"彼女は二千冊本を持っています", es:"Ella tiene dos mil libros", verbo: "N5", forma: "21-30", audio: "audios/023.mp3"},
+{jp:"歯を見ますから、口を開けてください", es:"Voy a mirar los dientes, abra la boca", verbo: "N5", forma: "21-30", audio: "audios/024.mp3"},
+{jp:"公園できれいな女の人を見ました", es:"Vi a una mujer hermosa en el parque", verbo: "N5", forma: "21-30", audio: "audios/025.mp3"},
+{jp:"海と山とどちらが好きですか", es:"¿Qué te gusta más, el mar o la montaña?", verbo: "N5", forma: "21-30", audio: "audios/026.mp3"},
+{jp:"一緒に川へ泳ぎに行きませんか", es:"¿Vamos a nadar al río juntos?", verbo: "N5", forma: "21-30", audio: "audios/027.mp3"},
+{jp:"あの、質問してもいいですか", es:"Eeeh, ¿puedo hacerle una pregunta?", verbo: "N5", forma: "21-30", audio: "audios/028.mp3"},
+{jp:"「一緒に飲みませんか」　「ええ、飲みましょう」", es:"¿Te gustaría tomar una copa juntos? / Sí, vamos", verbo: "N5", forma: "21-30", audio: "audios/029.mp3"},
+{jp:"ちょっと休みましょう", es:"Hagamos un descanso corto", verbo: "N5", forma: "21-30", audio: "audios/030.mp3"},
+{jp:"彼女はチョコレートをちょっと食べた", es:"Ella comió un poco de chocolate", verbo: "N5", forma: "31-40", audio: "audios/031.mp3"},
+{jp:"アメリカは日本より大きいです", es:"EEUU es más grande que Japón", verbo: "N5", forma: "31-40", audio: "audios/032.mp3"},
+{jp:"このカレーはとても辛いです", es:"Este curry es muy picante", verbo: "N5", forma: "31-40", audio: "audios/033.mp3"},
+{jp:"今日習った言葉をノートに書きました", es:"He escrito las palabras que he aprendido hoy en un cuaderno", verbo: "N5", forma: "31-40", audio: "audios/034.mp3"},
+{jp:"黒いペンでここにサインしてください", es:"Por favor, firme aquí con un bolígrafo negro", verbo: "N5", forma: "31-40", audio: "audios/035.mp3"},
+{jp:"三角形は角が三つあります", es:"Un triángulo tiene tres ángulos", verbo: "N5", forma: "31-40", audio: "audios/036.mp3"},
+{jp:"箱の中に何がありますか", es:"¿Qué hay dentro de la caja?", verbo: "N5", forma: "31-40", audio: "audios/037.mp3"},
+{jp:"ABBAは男の人が二人、女の人が二人のグループです", es:"ABBA es un grupo de dos hombres y dos mujeres", verbo: "N5", forma: "31-40", audio: "audios/038.mp3"},
+{jp:"手は指が五本あります", es:"Una mano tiene cinco dedos", verbo: "N5", forma: "31-40", audio: "audios/039.mp3"},
+{jp:"わたしは今日日本語を勉強しています", es:"Yo estoy estudiando japonés ahora", verbo: "N5", forma: "31-40", audio: "audios/040.mp3"},
+{jp:"六時半に起こしてください", es:"Por favor, despiértame a las 6:30", verbo: "N5", forma: "41-50", audio: "audios/041.mp3"},
+{jp:"その戸を開けてください", es:"Por favor, abra la puerta", verbo: "N5", forma: "41-50", audio: "audios/042.mp3"},
+{jp:"セーターを手で洗いました", es:"Lavé el jersey a mano", verbo: "N5", forma: "41-50", audio: "audios/043.mp3"},
+{jp:"「あの方はどなたですか」　「トムさんです」", es:"¿Quién es esa persona? / Tom", verbo: "N5", forma: "41-50", audio: "audios/044.mp3"},
+{jp:"お茶のいれ方を教えてください", es:"Por favor, dígame cómo poner el té", verbo: "N5", forma: "41-50", audio: "audios/045.mp3"},
+{jp:"彼は森の方へ行った", es:"Él fue en dirección al bosque", verbo: "N5", forma: "41-50", audio: "audios/046.mp3"},
+{jp:"りんごが木から落ちた", es:"La manzana cayó del árbol", verbo: "N5", forma: "41-50", audio: "audios/047.mp3"},
+{jp:"水をください", es:"Agua, por favor", verbo: "N5", forma: "41-50", audio: "audios/048.mp3"},
+{jp:"わたしは犬が大好きです", es:"Me gustan mucho los perros", verbo: "N5", forma: "41-50", audio: "audios/049.mp3"},
+{jp:"この辺にホテルはありますか", es:"¿Hay un hotel alrededor?", verbo: "N5", forma: "41-50", audio: "audios/050.mp3"},
+{jp:"「あなた達は学生ですか」　「はい、そうです」", es:"¿Sois estudiantes? / Sí, lo somos", verbo: "N5", forma: "51-60", audio: "audios/051.mp3"},
+{jp:"「ハサミを持ってきてください」　「ほかに何かいりますか」", es:"Tráeme tijeras / ¿Necesitas alguna otra cosa?", verbo: "N5", forma: "51-60", audio: "audios/052.mp3"},
+{jp:"彼女はもうここに住んでいません", es:"Ella ya no vive aquí", verbo: "N5", forma: "51-60", audio: "audios/053.mp3"},
+{jp:"彼は２００グラムのステーキを全部食べました", es:"Se comió todo el filete de 200 gramos", verbo: "N5", forma: "51-60", audio: "audios/054.mp3"},
+{jp:"彼はコートを脱いだ", es:"Se quitó el abrigo", verbo: "N5", forma: "51-60", audio: "audios/055.mp3"},
+{jp:"トイレはどこにありますか", es:"¿Dónde está el lavabo?", verbo: "N5", forma: "51-60", audio: "audios/056.mp3"},
+{jp:"このナイフはよく切れる", es:"Este cuchillo corta muy bien", verbo: "N5", forma: "51-60", audio: "audios/057.mp3"},
+{jp:"日本のパンはとても柔らかい", es:"El pan japonés es muy blando", verbo: "N5", forma: "51-60", audio: "audios/058.mp3"},
+{jp:"プールで子供たちが遊んでいる", es:"Los niños están jugando en la piscina", verbo: "N5", forma: "51-60", audio: "audios/059.mp3"},
+{jp:"私の誕生日は二月一日です", es:"Mi cumpleaños es a primeros de febrero", verbo: "N5", forma: "51-60", audio: "audios/060.mp3"},
+{jp:"彼はひと月で日本語が上手になった", es:"Consiguió un buen nivel de japonés en un mes", verbo: "N5", forma: "61-70", audio: "audios/061.mp3"},
+{jp:"ボールは丸い", es:"La pelota es redonda", verbo: "N5", forma: "61-70", audio: "audios/062.mp3"},
+{jp:"彼女はケーキを五つに分けた", es:"Ella dividió el pastel en cinco partes", verbo: "N5", forma: "61-70", audio: "audios/063.mp3"},
+{jp:"兄は私より二つ年上です", es:"Mi hermano mayor es dos años mayor que yo", verbo: "N5", forma: "61-70", audio: "audios/064.mp3"},
+{jp:"彼女はコーヒーにたくさん砂糖を入れた", es:"Ella puso mucho azúcar en el café", verbo: "N5", forma: "61-70", audio: "audios/065.mp3"},
+{jp:"その建物の入口で待ってください", es:"Por favor espera en la entrada del edificio", verbo: "N5", forma: "61-70", audio: "audios/066.mp3"},
+{jp:"彼の家には部屋が六つあります", es:"Hay seis habitaciones en su casa", verbo: "N5", forma: "61-70", audio: "audios/067.mp3"},
+{jp:"冬が終わって、春が来ました", es:"La primavera ha llegado después de que terminara el invierno", verbo: "N5", forma: "61-70", audio: "audios/068.mp3"},
+{jp:"母はナイフでチーズを切った", es:"Mi madre cortó el queso con un cuchillo", verbo: "N5", forma: "61-70", audio: "audios/069.mp3"},
+{jp:"カナダはアメリカの北にある", es:"Canadá está al norte de los Estados Unidos", verbo: "N5", forma: "61-70", audio: "audios/070.mp3"},
+{jp:"彼は毎日１時間半勉強した", es:"Estudió durante una hora y media todos los días", verbo: "N5", forma: "71-80", audio: "audios/071.mp3"},
+{jp:"私は右手ではしを持ちます", es:"Tengo un palillo en mi mano derecha", verbo: "N5", forma: "71-80", audio: "audios/072.mp3"},
+{jp:"二歳の娘は一、二、三、四、五と言うことができる", es:"Mi hija de dos años puede decir uno, dos, tres, cuatro, cinco", verbo: "N5", forma: "71-80", audio: "audios/073.mp3"},
+{jp:"週に四回フランス語の授業があります", es:"Hay cuatro clases de francés por semana", verbo: "N5", forma: "71-80", audio: "audios/074.mp3"},
+{jp:"子供たちは外に遊びに行った", es:"Los niños salieron a jugar fuera", verbo: "N5", forma: "71-80", audio: "audios/075.mp3"},
+{jp:"あなたは大人じゃありませんから、タバコを吸ってはいけません", es:"Como no eres un adulto, no debes fumar cigarrillos", verbo: "N5", forma: "71-80", audio: "audios/076.mp3"},
+{jp:"わたしは日本語が少しわかります", es:"Yo entiendo japonés un poco", verbo: "N5", forma: "71-80", audio: "audios/077.mp3"},
+{jp:"トラックが左へ曲がった", es:"El camión giró hacia la izquierda", verbo: "N5", forma: "71-80", audio: "audios/078.mp3"},
+{jp:"ここを引くと、水が出ます", es:"Tire aquí y saldrá un poco de agua", verbo: "N5", forma: "71-80", audio: "audios/079.mp3"},
+{jp:"村上英樹の新しい本を買いました", es:"Compré un nuevo libro de Hideki Murakami", verbo: "N5", forma: "71-80", audio: "audios/080.mp3"},
+{jp:"私は白ワインより赤ワインが好きだ", es:"Me gusta más el vino tinto que el blanco", verbo: "N5", forma: "81-90", audio: "audios/081.mp3"},
+{jp:"彼女は私の目を見た", es:"Ella vio mis ojos", verbo: "N5", forma: "81-90", audio: "audios/082.mp3"},
+{jp:"さあ、起きなさい", es:"Vamos, levántate", verbo: "N5", forma: "81-90", audio: "audios/083.mp3"},
+{jp:"「私は行かない」　「じゃ、僕が行こう」", es:"«No voy a ir» / «Bueno, yo sí iré»", verbo: "N5", forma: "81-90", audio: "audios/084.mp3"},
+{jp:"では始めよう", es:"Bueno, empecemos", verbo: "N5", forma: "81-90", audio: "audios/085.mp3"},
+{jp:"日本に行きました　でも北海道には行きませんでした", es:"Fui a Japón, pero no fui a Hokkaido", verbo: "N5", forma: "81-90", audio: "audios/086.mp3"},
+{jp:"もっとあなたと話したい", es:"Quiero hablar contigo más", verbo: "N5", forma: "81-90", audio: "audios/087.mp3"},
+{jp:"もっとゆっくり話してください", es:"Por favor, habla más despacio", verbo: "N5", forma: "81-90", audio: "audios/088.mp3"},
+{jp:"新しいカメラで花の写真をとった", es:"Tomé fotos de flores con una cámara nueva", verbo: "N5", forma: "81-90", audio: "audios/089.mp3"},
+{jp:"彼はひと月で四キロやせた", es:"Perdió cuatro kilos en un mes", verbo: "N5", forma: "81-90", audio: "audios/090.mp3"},
+{jp:"日本語のクラスは楽しかった", es:"Disfruté la clase de japonés", verbo: "N5", forma: "91-100", audio: "audios/091.mp3"},
+{jp:"コンビニでコピーできます", es:"Puede hacer copias en tiendas de conveniencia", verbo: "N5", forma: "91-100", audio: "audios/092.mp3"},
+{jp:"毎朝コーヒーを飲みます", es:"Bebo café todas las mañanas", verbo: "N5", forma: "91-100", audio: "audios/093.mp3"},
+{jp:"テープを持ってきてください", es:"Por favor, traiga cinta adhesiva", verbo: "N5", forma: "91-100", audio: "audios/094.mp3"},
+{jp:"ドアを開けてください", es:"Por favor, abre la puerta", verbo: "N5", forma: "91-100", audio: "audios/095.mp3"},
+{jp:"彼はバスに乗って、大阪へ行きました", es:"Tomó un autobús y se fue a Osaka", verbo: "N5", forma: "91-100", audio: "audios/096.mp3"},
+{jp:"１メートルは１００センチです", es:"1 metro son 100 centímetros", verbo: "N5", forma: "91-100", audio: "audios/097.mp3"},
+{jp:"来年は一月七日から授業が始まります", es:"La próxima clase comenzará a partir del 7 de enero", verbo: "N5", forma: "91-100", audio: "audios/098.mp3"},
+{jp:"もう七日間も、雨が降っています", es:"Ha estado lloviendo durante los siete días ya", verbo: "N5", forma: "91-100", audio: "audios/099.mp3"},
+{jp:"私は二月九日にロンドンに着いた", es:"Llegué a Londres el 9 de febrero", verbo: "N5", forma: "91-100", audio: "audios/100.mp3"},
+{jp:"リさんは九日後、韓国へ帰ります", es:"Sr. Lee regresará a Corea después de nueve días", verbo: "N5", forma: "101-110", audio: "audios/101.mp3"},
+{jp:"ホセさんは去年の二月二日に日本へ来ました", es:"El Sr. José vino a Japón el 2 de febrero pasado", verbo: "N5", forma: "101-110", audio: "audios/102.mp3"},
+{jp:"二日前に風邪をひきました", es:"Me resfrié hace dos días", verbo: "N5", forma: "101-110", audio: "audios/103.mp3"},
+{jp:"私より先に寝てください", es:"Por favor ve a dormir antes que yo", verbo: "N5", forma: "101-110", audio: "audios/104.mp3"},
+{jp:"学校は四月八日から始まる", es:"La escuela comienza el 8 de abril", verbo: "N5", forma: "101-110", audio: "audios/105.mp3"},
+{jp:"「いつ病院へ行きましたか」　「八日前に行きました」", es:"¿Cuándo fuiste al hospital? / Fui allí hace ocho días", verbo: "N5", forma: "101-110", audio: "audios/106.mp3"},
+{jp:"円いテーブルが欲しい", es:"Quiero una mesa circular", verbo: "N5", forma: "101-110", audio: "audios/107.mp3"},
+{jp:"先にお店を出るね", es:"Saldré de la tienda primero", verbo: "N5", forma: "101-110", audio: "audios/108.mp3"},
+{jp:"弟は八月十日に生まれた", es:"Mi hermano menor nació el 10 de agosto", verbo: "N5", forma: "101-110", audio: "audios/109.mp3"},
+{jp:"松本さんは十日間、中国を旅行した", es:"El Sr. Matsumoto viajó a China durante diez días", verbo: "N5", forma: "101-110", audio: "audios/110.mp3"},
+{jp:"日本は春、夏、秋、冬の四つの季節がある", es:"Japón tiene cuatro estaciones: primavera, verano, otoño e invierno", verbo: "N5", forma: "111-120", audio: "audios/111.mp3"},
+{jp:"私は指が太い", es:"Tengo los dedos gordos", verbo: "N5", forma: "111-120", audio: "audios/112.mp3"},
+{jp:"その年のクリスマスは土曜日だった", es:"La Navidad de ese año fue en sábado", verbo: "N5", forma: "111-120", audio: "audios/113.mp3"},
+{jp:"三歳の息子に子供の机を買った", es:"He comprado un escritorio infantil para mi hijo de tres años", verbo: "N5", forma: "111-120", audio: "audios/114.mp3"},
+{jp:"私は次の駅で降ります", es:"Me bajo en la próxima estación", verbo: "N5", forma: "111-120", audio: "audios/115.mp3"},
+{jp:"この池の絵はとても美しい", es:"La imagen de este estanque es muy hermosa", verbo: "N5", forma: "111-120", audio: "audios/116.mp3"},
+{jp:"田中さんのおばあさんは百歳です", es:"La abuela de Tanaka tiene 100 años", verbo: "N5", forma: "111-120", audio: "audios/117.mp3"},
+{jp:"昨日、息子が初めて立った", es:"Mi hijo se puso en pie por primera vez ayer", verbo: "N5", forma: "111-120", audio: "audios/118.mp3"},
+{jp:"うさぎの耳は長い", es:"Las orejas del conejo son largas", verbo: "N5", forma: "111-120", audio: "audios/119.mp3"},
+{jp:"彼は肉が好きだ", es:"A él le gusta carne", verbo: "N5", forma: "111-120", audio: "audios/120.mp3"},
+{jp:"「あなたは何色が好きですか」　「私は赤色が好きです」", es:"¿Qué color te gusta? / Me gusta el color rojo", verbo: "N5", forma: "121-130", audio: "audios/121.mp3"},
+{jp:"太陽は西に沈む", es:"El sol se pone en el oeste", verbo: "N5", forma: "121-130", audio: "audios/122.mp3"},
+{jp:"机の上に本があります", es:"Hay un libro en el escritorio", verbo: "N5", forma: "121-130", audio: "audios/123.mp3"},
+{jp:"私はカメラがあります", es:"Tengo una cámara", verbo: "N5", forma: "121-130", audio: "audios/124.mp3"},
+{jp:"「この本はあなたのですか」　「いいえ、わたしのじゃありません」", es:"¿Es este libro tuyo? / No, no es mío", verbo: "N5", forma: "121-130", audio: "audios/125.mp3"},
+{jp:"この本はとてもおもしろい", es:"Este libro es muy interesante", verbo: "N5", forma: "121-130", audio: "audios/126.mp3"},
+{jp:"母が手袋をくれました　こんな手袋が欲しかったですから、とてもうれしいです", es:"Mi madre me regaló unos guantes, como quería unos como esos, estoy muy feliz", verbo: "N5", forma: "121-130", audio: "audios/127.mp3"},
+{jp:"マリアさんは日本語が上手になりました", es:"María consiguió un buen japonés", verbo: "N5", forma: "121-130", audio: "audios/128.mp3"},
+{jp:"新しいコーヒーカップが買いたい", es:"Me gustaría comprar una nueva taza de café", verbo: "N5", forma: "121-130", audio: "audios/129.mp3"},
+{jp:"この黒いスカートのLサイズはありますか", es:"¿Hay talla L de esta falda negra?", verbo: "N5", forma: "121-130", audio: "audios/130.mp3"},
+{jp:"スプーンでカレーを食べる", es:"Come el curry con una cuchara", verbo: "N5", forma: "131-140", audio: "audios/131.mp3"},
+{jp:"白いセーターがコーヒーで汚れた", es:"El suéter blanco se ensució con café", verbo: "N5", forma: "131-140", audio: "audios/132.mp3"},
+{jp:"マリアさんは去年日本に来て、ゼロから日本語の勉強を始めました", es:"María vino a Japón el año pasado y comenzó a estudiar japonés desde cero", verbo: "N5", forma: "131-140", audio: "audios/133.mp3"},
+{jp:"明日日本語のテストがあります", es:"Tengo una prueba de japonés mañana", verbo: "N5", forma: "131-140", audio: "audios/134.mp3"},
+{jp:"毎日テレビでニュースを見ます", es:"Veo las noticias en la televisión todos los días", verbo: "N5", forma: "131-140", audio: "audios/135.mp3"},
+{jp:"デジタルカメラはフィルムがいりません", es:"Las cámaras digitales no necesitan película", verbo: "N5", forma: "131-140", audio: "audios/136.mp3"},
+{jp:"ナイフとフォークでステーキを食べます", es:"Voy a tomar un bistec con cuchillo y tenedor", verbo: "N5", forma: "131-140", audio: "audios/137.mp3"},
+{jp:"ペットショップで子猫を見た", es:"Vi un gatito en una tienda de mascotas", verbo: "N5", forma: "131-140", audio: "audios/138.mp3"},
+{jp:"彼は体が丈夫で、風邪をひかない", es:"Él es robusto y no se resfría", verbo: "N5", forma: "131-140", audio: "audios/139.mp3"},
+{jp:"私の誕生日は一月三日です", es:"Mi cumpleaños es el 3 de enero", verbo: "N5", forma: "131-140", audio: "audios/140.mp3"},
+{jp:"三日後いっしょにお酒を飲みにいきましょう", es:"Vayamos a beber juntos dentro de tres días", verbo: "N5", forma: "141-150", audio: "audios/141.mp3"},
+{jp:"彼は料理が上手だ", es:"Él es un buen cocinero", verbo: "N5", forma: "141-150", audio: "audios/142.mp3"},
+{jp:"彼女はテニスが下手だ", es:"Ella no es buena en el tenis", verbo: "N5", forma: "141-150", audio: "audios/143.mp3"},
+{jp:"野菜は体にいい", es:"Las verduras son buenas para el cuerpo", verbo: "N5", forma: "141-150", audio: "audios/144.mp3"},
+{jp:"「これは何ですか」　「これは私の辞書です」", es:"¿Qué es esto? / Este es mi diccionario", verbo: "N5", forma: "141-150", audio: "audios/145.mp3"},
+{jp:"彼はポケットから財布を出した", es:"Él sacó su cartera del bolsillo", verbo: "N5", forma: "141-150", audio: "audios/146.mp3"},
+{jp:"私は日本語が少し分かります", es:"Yo entiendo japonés un poco", verbo: "N5", forma: "141-150", audio: "audios/147.mp3"},
+{jp:"兄は毎日卵を一つ食べる", es:"Mi hermano mayor come un huevo cada día", verbo: "N5", forma: "141-150", audio: "audios/148.mp3"},
+{jp:"私は古い映画が好きです", es:"Me gustan las películas viejas", verbo: "N5", forma: "141-150", audio: "audios/149.mp3"},
+{jp:"彼女はいつも小さい声で話す", es:"Ella siempre habla en voz baja", verbo: "N5", forma: "141-150", audio: "audios/150.mp3"},
+{jp:"昨日は夕方から雨が降り出した", es:"Comenzó a llover ayer por la tarde", verbo: "N5", forma: "151-160", audio: "audios/151.mp3"},
+{jp:"明日は大切な会議があります", es:"Tengo una reunión importante mañana", verbo: "N5", forma: "151-160", audio: "audios/152.mp3"},
+{jp:"あそこにいる女の子はだれですか", es:"¿Quién es la chica de allí?", verbo: "N5", forma: "151-160", audio: "audios/153.mp3"},
+{jp:"両親の家の庭はとても広い", es:"El jardín de la casa de los padres es muy grande", verbo: "N5", forma: "151-160", audio: "audios/154.mp3"},
+{jp:"私は弟が二人います", es:"Tengo dos hermanos", verbo: "N5", forma: "151-160", audio: "audios/155.mp3"},
+{jp:"私は小さな村で生まれました", es:"Nací en un pequeño pueblo", verbo: "N5", forma: "151-160", audio: "audios/156.mp3"},
+{jp:"とても甘いいちごを食べました", es:"Comí una fresa muy dulce", verbo: "N5", forma: "151-160", audio: "audios/157.mp3"},
+{jp:"「あの男の人がジョンさんですか」　「はい、そうです」", es:"¿Es ese hombre John? / Sí, así es", verbo: "N5", forma: "151-160", audio: "audios/158.mp3"},
+{jp:"私はこの町に五年住んでいます", es:"Vivo en esta ciudad por 5 años", verbo: "N5", forma: "151-160", audio: "audios/159.mp3"},
+{jp:"彼はいつも白いシャツを着ている", es:"Él siempre usa camisa blanca", verbo: "N5", forma: "151-160", audio: "audios/160.mp3"},
+{jp:"私は四年間東京で働いていました", es:"Yo trabajé en Tokio durante cuatro años", verbo: "N5", forma: "161-170", audio: "audios/161.mp3"},
+{jp:"春はたくさんの花が咲く", es:"Muchas flores florecen en primavera", verbo: "N5", forma: "161-170", audio: "audios/162.mp3"},
+{jp:"私はバスで会社へ行きます", es:"Voy a la oficina en autobús", verbo: "N5", forma: "161-170", audio: "audios/163.mp3"},
+{jp:"次の角に郵便局があります", es:"Hay una oficina de correos en la próxima esquina", verbo: "N5", forma: "161-170", audio: "audios/164.mp3"},
+{jp:"カルラさんが赤ワインを買いました", es:"Carla compró un vino tinto", verbo: "N5", forma: "161-170", audio: "audios/165.mp3"},
+{jp:"子供はすぐ足が大きくなる", es:"Los pies de los niños crecen rápidamente", verbo: "N5", forma: "161-170", audio: "audios/166.mp3"},
+{jp:"サムさんは足が長い", es:"Sam tiene piernas largas", verbo: "N5", forma: "161-170", audio: "audios/167.mp3"},
+{jp:"彼は新しい車を買った", es:"Él compró un coche nuevo", verbo: "N5", forma: "161-170", audio: "audios/168.mp3"},
+{jp:"駅の近くに銀行があります", es:"Hay un banco cerca de la estación", verbo: "N5", forma: "161-170", audio: "audios/169.mp3"},
+{jp:"「あれは何ですか」　「あれは猫です」", es:"¿Qué es aquello? / Aquello es un gato", verbo: "N5", forma: "161-170", audio: "audios/170.mp3"},
+{jp:"あのお店に色々なものがあります", es:"Hay varias cosas en esa tienda", verbo: "N5", forma: "171-180", audio: "audios/171.mp3"},
+{jp:"母がご飯を作って、父がお皿を洗った", es:"Mi madre cocinó, mi padre lavó los platos", verbo: "N5", forma: "171-180", audio: "audios/172.mp3"},
+{jp:"あの本を見せてください", es:"Por favor muéstrame ese libro", verbo: "N5", forma: "171-180", audio: "audios/173.mp3"},
+{jp:"これはルイスさんの傘です", es:"Este es el paraguas de Luis", verbo: "N5", forma: "171-180", audio: "audios/174.mp3"},
+{jp:"「どの人が山田さんですか」　「あの背が高くて、髪の短い人です」", es:"¿Cuál es el Sr. Yamada? / Él es alto y tiene el pelo corto", verbo: "N5", forma: "171-180", audio: "audios/175.mp3"},
+{jp:"あの親子はよく似ています", es:"Ese padre e hijo se parecen mucho", verbo: "N5", forma: "171-180", audio: "audios/176.mp3"},
+{jp:"私は映画館へよく行きます", es:"A menudo voy al cine", verbo: "N5", forma: "171-180", audio: "audios/177.mp3"},
+{jp:"彼女は古いアパートに住んでいました", es:"Ella vivía en un apartamento viejo", verbo: "N5", forma: "171-180", audio: "audios/178.mp3"},
+{jp:"一キログラムは千グラムだ", es:"Un kilogramo son mil gramos", verbo: "N5", forma: "171-180", audio: "audios/179.mp3"},
+{jp:"彼はいつも白いシャツを着ている", es:"Él siempre lleva camisa blanca", verbo: "N5", forma: "171-180", audio: "audios/180.mp3"},
+{jp:"私は毎朝シャワーを浴びます", es:"Tomo una ducha cada mañana", verbo: "N5", forma: "181-190", audio: "audios/181.mp3"},
+{jp:"寒いですから、ストーブをつけましょう", es:"Hace frío, así que vamos a poner la estufa", verbo: "N5", forma: "181-190", audio: "audios/182.mp3"},
+{jp:"大きなテレビが欲しいです", es:"Quiero un televisor grande", verbo: "N5", forma: "181-190", audio: "audios/183.mp3"},
+{jp:"バターを取ってください", es:"Por favor acércame la mantequilla", verbo: "N5", forma: "181-190", audio: "audios/184.mp3"},
+{jp:"おじいさんはマッチでタバコに火をつけた", es:"El anciano encendió un cigarrillo con una cerilla", verbo: "N5", forma: "181-190", audio: "audios/185.mp3"},
+{jp:"カリナさんはたくさんレコードを集めています", es:"Karina está reuniendo muchos discos", verbo: "N5", forma: "181-190", audio: "audios/186.mp3"},
+{jp:"Ｙシャツにアイロンをかけよう", es:"Vamos a planchar la camiseta", verbo: "N5", forma: "181-190", audio: "audios/187.mp3"},
+{jp:"四月二十日は母の誕生日です", es:"El 20 de abril es el cumpleaños de mi madre", verbo: "N5", forma: "181-190", audio: "audios/188.mp3"},
+{jp:"今年の夏は二十日間の休みがありました", es:"Hubo un descanso de 20 días este verano", verbo: "N5", forma: "181-190", audio: "audios/189.mp3"},
+{jp:"七月五日に娘の誕生日パーティをします", es:"Haré la fiesta de cumpleaños de mi hija el 5 de julio", verbo: "N5", forma: "181-190", audio: "audios/190.mp3"},
+{jp:"今日から五日間、東京に行きます", es:"Iré a Tokio dentro de cinco días", verbo: "N5", forma: "191-200", audio: "audios/191.mp3"},
+{jp:"今日、彼女とデートします", es:"Hoy voy a salir con ella", verbo: "N5", forma: "191-200", audio: "audios/192.mp3"},
+{jp:"今月は十日間の休みがありました", es:"Este mes tuve un descanso de diez días", verbo: "N5", forma: "191-200", audio: "audios/193.mp3"},
+{jp:"休みの日にあなたは何をしますか", es:"¿Qué vas a hacer en tus vacaciones?", verbo: "N5", forma: "191-200", audio: "audios/194.mp3"},
+{jp:"きのう山田さんに会いました", es:"Conocí a la Sra. Yamada ayer", verbo: "N5", forma: "191-200", audio: "audios/195.mp3"},
+{jp:"子供と一緒にクッキーを作りました", es:"Hice galletas con mi hijo", verbo: "N5", forma: "191-200", audio: "audios/196.mp3"},
+{jp:"彼は十月六日に東京に着いた", es:"Llegó a Tokio el 6 de octubre", verbo: "N5", forma: "191-200", audio: "audios/197.mp3"},
+{jp:"ワンさんは六日前に日本に来ました", es:"El Sr. Wang vino a Japón hace seis días", verbo: "N5", forma: "191-200", audio: "audios/198.mp3"},
+{jp:"この大きな駅の出口はどこですか", es:"¿Dónde está la salida de esta gran estación?", verbo: "N5", forma: "191-200", audio: "audios/199.mp3"},
+{jp:"ハガキに切手を貼る", es:"Ponga un sello en las tarjetas postales", verbo: "N5", forma: "191-200", audio: "audios/200.mp3"},
+{jp:"私はタバコを吸いませんが、妹は吸います", es:"Yo no fumo, pero mi hermana sí", verbo: "N5", forma: "201-210", audio: "audios/201.mp3"},
+{jp:"風が吹いて、花が散った", es:"El viento soplaba, las flores se dispersaban", verbo: "N5", forma: "201-210", audio: "audios/202.mp3"},
+{jp:"アントニオさんは、日本で生活して、困ったことはありますか", es:"¿Antonio tuvo problemas para vivir en Japón?", verbo: "N5", forma: "201-210", audio: "audios/203.mp3"},
+{jp:"「マリアさんのお国はどこですか」　「イタリアです」", es:"María, ¿de qué país eres? / Soy de Italia", verbo: "N5", forma: "201-210", audio: "audios/204.mp3"},
+{jp:"「どこで傘が売っていますか」　「コンビニで売っていますよ」", es:"¿Dónde se venden los paraguas? / Se venden en tiendas de conveniencia", verbo: "N5", forma: "201-210", audio: "audios/205.mp3"},
+{jp:"東京は人が多いです", es:"Hay muchas personas en Tokio", verbo: "N5", forma: "201-210", audio: "audios/206.mp3"},
+{jp:"今日の夜、テレビを見て、それからゲームをしたい", es:"Por la noche veré la televisión y luego jugaré a videojuegos", verbo: "N5", forma: "201-210", audio: "audios/207.mp3"},
+{jp:"鈴木さんは背が高くて、足も大きい", es:"El Sr. Suzuki es alto y sus pies son grandes", verbo: "N5", forma: "201-210", audio: "audios/208.mp3"},
+{jp:"私は妹が二人います", es:"Tengo dos hermanas menores", verbo: "N5", forma: "201-210", audio: "audios/209.mp3"},
+{jp:"姉は近くの郵便局で働いています", es:"Mi hermana mayor trabaja en una oficina de correos cercana", verbo: "N5", forma: "201-210", audio: "audios/210.mp3"},
+{jp:"このかばんは安くて、丈夫です", es:"Este bolso es barato y resistente", verbo: "N5", forma: "211-220", audio: "audios/211.mp3"},
+{jp:"祖母は小さい家に住んでいます", es:"Mi abuela vive en una pequeña casa", verbo: "N5", forma: "211-220", audio: "audios/212.mp3"},
+{jp:"私はあの店でカメラを買いました", es:"Compré una cámara en esa tienda", verbo: "N5", forma: "211-220", audio: "audios/213.mp3"},
+{jp:"奈良は静かできれいな所です", es:"Nara es un lugar tranquilo y hermoso", verbo: "N5", forma: "211-220", audio: "audios/214.mp3"},
+{jp:"「どうぞ、コーヒーです」　「わあ、早い！」", es:"Aquí está tu café / ¡Wow, eso es rápido!", verbo: "N5", forma: "211-220", audio: "audios/215.mp3"},
+{jp:"明日は朝早い電車に乗ります", es:"Tomaré un tren temprano mañana por la mañana", verbo: "N5", forma: "211-220", audio: "audios/216.mp3"},
+{jp:"寒いですから、暖かい服が欲しいです", es:"Hace frío, quiero ropa calentita", verbo: "N5", forma: "211-220", audio: "audios/217.mp3"},
+{jp:"もうすぐ友達が家に来る", es:"Un amigo pronto vendrá a casa", verbo: "N5", forma: "211-220", audio: "audios/218.mp3"},
+{jp:"太陽は東から出ます", es:"El sol sale del este", verbo: "N5", forma: "211-220", audio: "audios/219.mp3"},
+{jp:"白い車が私のとなりに止まった", es:"Un coche blanco se detuvo a mi lado", verbo: "N5", forma: "211-220", audio: "audios/220.mp3"},
+{jp:"祖父は五年前、病気で死んだ", es:"Mi abuelo murió de una enfermedad hace cinco años", verbo: "N5", forma: "221-230", audio: "audios/221.mp3"},
+{jp:"靴下が汚いですから、洗いましょう", es:"Como mis calcetines están sucios, vamos a lavarlos", verbo: "N5", forma: "221-230", audio: "audios/222.mp3"},
+{jp:"彼の部屋は物が多すぎます", es:"Su habitación tiene demasiadas cosas", verbo: "N5", forma: "221-230", audio: "audios/223.mp3"},
+{jp:"彼女は空を見た", es:"Ella miró el cielo", verbo: "N5", forma: "221-230", audio: "audios/224.mp3"},
+{jp:"サンドラさんと映画を見ました", es:"Vi una película con Sandra", verbo: "N5", forma: "221-230", audio: "audios/225.mp3"},
+{jp:"アントニオさんは毎朝３キロ走ります", es:"Antonio corre 3 kilómetros cada mañana", verbo: "N5", forma: "221-230", audio: "audios/226.mp3"},
+{jp:"彼の家と私の家はとても近い", es:"Su casa y mi casa están muy cerca", verbo: "N5", forma: "221-230", audio: "audios/227.mp3"},
+{jp:"図書館に借りた本を返す", es:"Devuelva los libros prestados de la biblioteca", verbo: "N5", forma: "221-230", audio: "audios/228.mp3"},
+{jp:"山田さんのお家には立派な門があります", es:"La casa de Yamada tiene una buena puerta", verbo: "N5", forma: "221-230", audio: "audios/229.mp3"},
+{jp:"雨の日は出かけたくありません", es:"No quiero salir en un día lluvioso", verbo: "N5", forma: "221-230", audio: "audios/230.mp3"},
+{jp:"スペインの空はとてもきれいな青色です", es:"El cielo de España es de un azul precioso", verbo: "N5", forma: "231-240", audio: "audios/231.mp3"},
+{jp:"「あなたの車はどれですか」　「あの白い車です」", es:"¿Cuál es tu coche? / Aquel coche blanco", verbo: "N5", forma: "231-240", audio: "audios/232.mp3"},
+{jp:"「冬の沖縄は寒いですか」　「いいえ、あまり寒くありません」", es:"¿En Okinawa hace frío en invierno? / No, no hace mucho frío", verbo: "N5", forma: "231-240", audio: "audios/233.mp3"},
+{jp:"今日は天気がよくて、気分がいい", es:"El clima de hoy es bueno, me siento bien", verbo: "N5", forma: "231-240", audio: "audios/234.mp3"},
+{jp:"「私は彼に電話をしません」　「じゃあ、私がしましょう」", es:"No lo llamaré / Bueno, entonces, déjame hacerlo a mí", verbo: "N5", forma: "231-240", audio: "audios/235.mp3"},
+{jp:"「その本を取ってください」　「これですか」　「そうそう、それです」", es:"Por favor toma ese libro / ¿Este? / Oh sí, ese es", verbo: "N5", forma: "231-240", audio: "audios/236.mp3"},
+{jp:"「お茶をどうぞ」　「ありがとうございます」", es:"Por favor, tome un poco de té / Gracias", verbo: "N5", forma: "231-240", audio: "audios/237.mp3"},
+{jp:"「あなたの傘はどれですか」　「この黒い傘です」", es:"¿Cuál es tu paraguas? / Este paraguas negro", verbo: "N5", forma: "231-240", audio: "audios/238.mp3"},
+{jp:"この箱のみかんはみんなおいしかった", es:"Todas las naranjas de esta caja eran deliciosas", verbo: "N5", forma: "231-240", audio: "audios/239.mp3"},
+{jp:"彼は毎朝５キロメートル走る", es:"Corre 5 kilómetros cada mañana", verbo: "N5", forma: "231-240", audio: "audios/240.mp3"},
+{jp:"「ハンスさんの趣味は何ですか」　「ギターを弾くことです」", es:"¿Cuál es el pasatiempo de Hans? / Tocar la guitarra", verbo: "N5", forma: "241-250", audio: "audios/241.mp3"},
+{jp:"「タクシーを呼びましょうか」　「はい、お願いします」", es:"¿Le llamamos a un taxi? / Sí, por favor", verbo: "N5", forma: "241-250", audio: "audios/242.mp3"},
+{jp:"そのテーブルのしたに猫がいます", es:"Hay un gato debajo de la mesa", verbo: "N5", forma: "241-250", audio: "audios/243.mp3"},
+{jp:"娘がハンカチを忘れた", es:"Mi hija olvidó su pañuelo", verbo: "N5", forma: "241-250", audio: "audios/244.mp3"},
+{jp:"今日は日本語の本を３ページ読んだ", es:"Hoy leí 3 páginas de un libro en japonés", verbo: "N5", forma: "241-250", audio: "audios/245.mp3"},
+{jp:"ハワイに行くとき、いつも同じホテルに泊まります", es:"Siempre me quedo en el mismo hotel cuando voy a Hawái", verbo: "N5", forma: "241-250", audio: "audios/246.mp3"},
+{jp:"ポストに手紙が入っていた", es:"Había una carta en el buzón", verbo: "N5", forma: "241-250", audio: "audios/247.mp3"},
+{jp:"明日、家族みんなでレストランへ行きます", es:"Mañana, toda mi familia va a un restaurante", verbo: "N5", forma: "241-250", audio: "audios/248.mp3"},
+{jp:"たくさん働きましたから、週末はゆっくり休みます", es:"Trabajé mucho, así que me tomaré un descanso el fin de semana", verbo: "N5", forma: "241-250", audio: "audios/249.mp3"},
+{jp:"私は父より背が低い", es:"Soy más bajo que mi padre", verbo: "N5", forma: "241-250", audio: "audios/250.mp3"},
+{jp:"十月の初めに奈良へ行きませんか", es:"¿Me acompañarás a Nara a principios de octubre?", verbo: "N5", forma: "251-260", audio: "audios/251.mp3"},
+{jp:"田中さんは二日前にカナダから日本へ帰ってきました", es:"El Sr. Tanaka regresó de Canadá a Japón hace dos días", verbo: "N5", forma: "251-260", audio: "audios/252.mp3"},
+{jp:"本屋の前に自転車があります", es:"Hay una bicicleta frente a la librería", verbo: "N5", forma: "251-260", audio: "audios/253.mp3"},
+{jp:"みちこさんはりんごを半分食べました", es:"Michiko comió la mitad de la manzana", verbo: "N5", forma: "251-260", audio: "audios/254.mp3"},
+{jp:"メキシコはアメリカの南にあります", es:"México está en el sur de América", verbo: "N5", forma: "251-260", audio: "audios/255.mp3"},
+{jp:"彼と私は同じ学校に行っています", es:"Él y yo vamos a la misma escuela", verbo: "N5", forma: "251-260", audio: "audios/256.mp3"},
+{jp:"今年の十一月四日は土曜日でした", es:"Este 4 de noviembre fue sábado", verbo: "N5", forma: "251-260", audio: "audios/257.mp3"},
+{jp:"四日後に試験がありますから、たくさん勉強しています", es:"Como tengo un examen dentro de cuatro días, estoy estudiando mucho", verbo: "N5", forma: "251-260", audio: "audios/258.mp3"},
+{jp:"私は日本の食べ物が好きです", es:"Me gusta la comida japonesa", verbo: "N5", forma: "251-260", audio: "audios/259.mp3"},
+{jp:"あそこに田中さんがいます", es:"Ahí está Tanaka", verbo: "N5", forma: "251-260", audio: "audios/260.mp3"},
+{jp:"食事の後、映画を見ませんか", es:"¿Te gustaría ver una película después de comer?", verbo: "N5", forma: "261-270", audio: "audios/261.mp3"},
+{jp:"「デニスさんは最近忙しいですか」　「いいえ、忙しくないです」", es:"¿Denise ha estado ocupada recientemente? / No, no ha estado ocupada", verbo: "N5", forma: "261-270", audio: "audios/262.mp3"},
+{jp:"私は春がすきです", es:"Me gusta la primavera", verbo: "N5", forma: "261-270", audio: "audios/263.mp3"},
+{jp:"明日は昼から仕事に行く", es:"Iré a trabajar desde el mediodía de mañana", verbo: "N5", forma: "261-270", audio: "audios/264.mp3"},
+{jp:"子どもといっしょに、ゆっくり歩く", es:"Camino despacio con mi hijo", verbo: "N5", forma: "261-270", audio: "audios/265.mp3"},
+{jp:"私は夏に毎日海へ行く", es:"Voy al mar todos los días en verano", verbo: "N5", forma: "261-270", audio: "audios/266.mp3"},
+{jp:"田中さんの電話番号を知っていますか", es:"¿Conoces el número de teléfono de Tanaka?", verbo: "N5", forma: "261-270", audio: "audios/267.mp3"},
+{jp:"栗は秋の食べ物です", es:"La castaña es comida de otoño", verbo: "N5", forma: "261-270", audio: "audios/268.mp3"},
+{jp:"マリアさんは背が高い", es:"María es alta", verbo: "N5", forma: "261-270", audio: "audios/269.mp3"},
+{jp:"今日は天気がよくない", es:"El clima no es bueno hoy", verbo: "N5", forma: "261-270", audio: "audios/270.mp3"},
+{jp:"彼女は明日京都へ行くと言いました", es:"Ella dijo que irá a Kioto mañana", verbo: "N5", forma: "271-280", audio: "audios/271.mp3"},
+      ];
+
+    // Verbos y formas únicos
+    const verbs = Array.from(new Set(frases.map((f) => f.verbo)));
+    const forms = Array.from(new Set(frases.map((f) => f.forma)));
+
+    const selectedVerbs = new Set();
+    const selectedForms = new Set();
+
+    // DOM inicial
+    const setupScreen = document.getElementById("setup-screen");
+    const studyScreen = document.getElementById("study-screen");
+
+    const verbsGrid = document.getElementById("verbs-grid");
+    const formsGrid = document.getElementById("forms-grid");
+    const btnSelectAllVerbs = document.getElementById("btn-select-all-verbs");
+    const btnSelectAllForms = document.getElementById("btn-select-all-forms");
+    const verbsCountEl = document.getElementById("verbs-count");
+    const formsCountEl = document.getElementById("forms-count");
+
+    const modeEscuchar = document.getElementById("mode-escuchar");
+    const modeTraducir = document.getElementById("mode-traducir");
+    const modeLeer = document.getElementById("mode-leer");
+    const modeAutomatico = document.getElementById("mode-automatico");
+    const statusText = document.getElementById("status-text");
+    const statusCounter = document.getElementById("status-counter");
+    const toast = document.getElementById("toast");
+
+    // DOM estudio
+    const btnHome = document.getElementById("btn-home");
+    const progressBar = document.getElementById("progress-bar");
+    const progressText = document.getElementById("progress-text");
+
+    const studyMain = document.getElementById("study-main");
+    const studySub = document.getElementById("study-sub");
+    const btnRepeatAudio = document.getElementById("btn-repeat-audio");
+
+    const btnReveal = document.getElementById("btn-reveal");
+    const resultButtons = document.getElementById("result-buttons");
+    const btnCorrect = document.getElementById("btn-correct");
+    const btnWrong = document.getElementById("btn-wrong");
+    const btnFinishHome = document.getElementById("btn-finish-home");
+
+    const audioPlayer = document.getElementById("audio-player");
+
+    // Estado de estudio
+    let studyMode = null;         // "escuchar" | "traducir" | "leer" | "automatico"
+    let remainingPhrases = [];
+    let totalPhrases = 0;
+    let currentIndex = -1;
+    let currentPhrase = null;
+    let isRevealed = false;
+    let autoTimer = null;         // para el modo automático
+
+    // ---------- Utilidades pantalla inicial ----------
+
+    function createToggleButton(label, value, type) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = label;
+      btn.className = "toggle-btn";
+      btn.dataset.value = value;
+      btn.dataset.type = type;
+      btn.addEventListener("click", () => {
+        handleToggleClick(btn);
+      });
+      return btn;
+    }
+
+    function renderGrids() {
+      verbsGrid.innerHTML = "";
+      verbs.forEach((verb) => {
+        const btn = createToggleButton(verb, verb, "verb");
+        verbsGrid.appendChild(btn);
+      });
+
+      formsGrid.innerHTML = "";
+      forms.forEach((form) => {
+        const label = form;
+        const btn = createToggleButton(label, form, "form");
+        formsGrid.appendChild(btn);
+      });
+
+      updateCounts();
+      updateSelectAllStates();
+      updateModesState();
+    }
+
+    function handleToggleClick(btn) {
+      const value = btn.dataset.value;
+      const type = btn.dataset.type;
+
+      if (type === "verb") {
+        if (selectedVerbs.has(value)) {
+          selectedVerbs.delete(value);
+          btn.classList.remove("is-active");
+        } else {
+          selectedVerbs.add(value);
+          btn.classList.add("is-active");
+        }
+      } else if (type === "form") {
+        if (selectedForms.has(value)) {
+          selectedForms.delete(value);
+          btn.classList.remove("is-active");
+        } else {
+          selectedForms.add(value);
+          btn.classList.add("is-active");
+        }
+      }
+
+      updateCounts();
+      updateSelectAllStates();
+      updateModesState();
+    }
+
+    // Todas las frases que cumplen con la selección actual
+	function getActivePhrases() {
+	  if (selectedVerbs.size === 0 || selectedForms.size === 0) return [];
+	  return frases.filter(
+	    (f) => selectedVerbs.has(f.verbo) && selectedForms.has(f.forma)
+	  );
+	}
+
+    function updateCounts() {
+      verbsCountEl.textContent = selectedVerbs.size;
+      formsCountEl.textContent = selectedForms.size;
+
+      const totalSelectedPhrases = getActivePhrases().length;
+      if (totalSelectedPhrases > 0) {
+        statusCounter.textContent = `${totalSelectedPhrases} frases seleccionadas`;
+      } else {
+        statusCounter.textContent = "";
+      }
+    }
+
+    function updateSelectAllStates() {
+      const allVerbsSelected = selectedVerbs.size === verbs.length && verbs.length > 0;
+      if (allVerbsSelected) {
+        btnSelectAllVerbs.classList.add("is-active");
+      } else {
+        btnSelectAllVerbs.classList.remove("is-active");
+      }
+
+      const allFormsSelected = selectedForms.size === forms.length && forms.length > 0;
+      if (allFormsSelected) {
+        btnSelectAllForms.classList.add("is-active");
+      } else {
+        btnSelectAllForms.classList.remove("is-active");
+      }
+    }
+
+    function updateModesState() {
+      const hasVerb = selectedVerbs.size > 0;
+      const hasForm = selectedForms.size > 0;
+      const canStudy = hasVerb && hasForm;
+
+      const modeButtons = [modeEscuchar, modeTraducir, modeLeer, modeAutomatico];
+
+      modeButtons.forEach((btn) => {
+        if (canStudy) {
+          btn.classList.remove("is-disabled");
+          btn.removeAttribute("disabled");
+        } else {
+          btn.classList.add("is-disabled");
+          btn.setAttribute("disabled", "disabled");
+        }
+      });
+
+      if (!canStudy) {
+        statusText.textContent = "Selecciona al menos 1 verbo y 1 forma.";
+        toast.textContent = "";
+      } else {
+        statusText.textContent =
+          "Listo. Elige un modo para empezar (escuchar, traducir, leer o automático).";
+      }
+    }
+
+    btnSelectAllVerbs.addEventListener("click", () => {
+      const allSelected = selectedVerbs.size === verbs.length && verbs.length > 0;
+      selectedVerbs.clear();
+      if (!allSelected) {
+        verbs.forEach((v) => selectedVerbs.add(v));
+      }
+      Array.from(verbsGrid.children).forEach((btn) => {
+        const value = btn.dataset.value;
+        if (selectedVerbs.has(value)) {
+          btn.classList.add("is-active");
+        } else {
+          btn.classList.remove("is-active");
+        }
+      });
+      updateCounts();
+      updateSelectAllStates();
+      updateModesState();
+    });
+
+    btnSelectAllForms.addEventListener("click", () => {
+      const allSelected = selectedForms.size === forms.length && forms.length > 0;
+      selectedForms.clear();
+      if (!allSelected) {
+        forms.forEach((f) => selectedForms.add(f));
+      }
+      Array.from(formsGrid.children).forEach((btn) => {
+        const value = btn.dataset.value;
+        if (selectedForms.has(value)) {
+          btn.classList.add("is-active");
+        } else {
+          btn.classList.remove("is-active");
+        }
+      });
+      updateCounts();
+      updateSelectAllStates();
+      updateModesState();
+    });
+
+    // ---------- Navegación pantallas ----------
+
+    function showSetupScreen() {
+      studyScreen.style.display = "none";
+      setupScreen.style.display = "flex";
+      clearTimeout(autoTimer);
+      autoTimer = null;
+      try {
+        audioPlayer.pause();
+      } catch (e) {}
+    }
+
+    function showStudyScreen() {
+      setupScreen.style.display = "none";
+      studyScreen.style.display = "flex";
+    }
+
+    // ---------- Lógica de estudio ----------
+
+    function playAudioForCurrent() {
+      if (!currentPhrase || !currentPhrase.audio) return;
+      try {
+        audioPlayer.pause();
+      } catch (e) {}
+      audioPlayer.src = currentPhrase.audio;
+      audioPlayer.currentTime = 0;
+      audioPlayer.play().catch((err) => {
+        console.warn("No se pudo reproducir el audio:", err);
+      });
+    }
+
+    function updateProgress() {
+      const completed = totalPhrases - remainingPhrases.length;
+      const ratio = totalPhrases > 0 ? completed / totalPhrases : 0;
+      progressBar.style.width = (ratio * 100).toFixed(1) + "%";
+      progressText.textContent = `${completed} / ${totalPhrases}`;
+    }
+
+    function setBottomState(state) {
+      if (state === "question") {
+        btnReveal.style.display = "block";
+        resultButtons.style.display = "none";
+        btnFinishHome.style.display = "none";
+      } else if (state === "revealed") {
+        btnReveal.style.display = "none";
+        resultButtons.style.display = "flex";
+        btnFinishHome.style.display = "none";
+      } else if (state === "finished") {
+        btnReveal.style.display = "none";
+        resultButtons.style.display = "none";
+        btnFinishHome.style.display = "block";
+      }
+    }
+
+    function renderCardQuestion() {
+      if (!currentPhrase) return;
+
+      btnRepeatAudio.style.display = "none";
+
+      if (studyMode === "escuchar" || studyMode === "automatico") {
+        studyMain.textContent = "Reproduciendo audio";
+        studySub.textContent = "Escucha y traduce mentalmente al español.";
+        btnRepeatAudio.style.display = "inline-flex";
+        playAudioForCurrent();
+      } else if (studyMode === "traducir") {
+        studyMain.textContent = currentPhrase.es;
+        studySub.textContent = "Traduce mentalmente al japonés.";
+      } else if (studyMode === "leer") {
+        studyMain.textContent = currentPhrase.jp;
+        studySub.textContent = "Lee y traduce mentalmente al español.";
+      }
+    }
+
+    function renderCardRevealed() {
+      if (!currentPhrase) return;
+      studyMain.textContent = currentPhrase.jp;
+      studySub.textContent = currentPhrase.es;
+      btnRepeatAudio.style.display = "inline-flex";
+
+      // No reproducimos automáticamente en escuchar ni en automático
+      if (studyMode !== "escuchar" && studyMode !== "automatico") {
+        playAudioForCurrent();
+      }
+    }
+
+    function pickNextPhrase() {
+      clearTimeout(autoTimer);
+      autoTimer = null;
+
+      if (remainingPhrases.length === 0) {
+        showFinishedState();
+        return;
+      }
+      const randomIndex = Math.floor(Math.random() * remainingPhrases.length);
+      currentIndex = randomIndex;
+      currentPhrase = remainingPhrases[randomIndex];
+      isRevealed = false;
+      setBottomState("question");
+      updateProgress();
+      studyMain.classList.remove("finished-text-main");
+      renderCardQuestion();
+
+      // Programar avance automático si procede
+      if (studyMode === "automatico") {
+        autoTimer = setTimeout(() => {
+          // Si se ha cambiado de modo o de frase, salimos
+          if (studyMode !== "automatico") return;
+          if (!currentPhrase || isRevealed) return;
+
+          // Revelar + marcar como acertada y pasar a la siguiente
+          isRevealed = true;
+          setBottomState("revealed");
+          renderCardRevealed();
+          markAnswer(true);
+        }, 6000);
+      }
+    }
+
+    function showFinishedState() {
+      clearTimeout(autoTimer);
+      autoTimer = null;
+      currentPhrase = null;
+      isRevealed = true;
+      updateProgress();
+      studyMain.textContent = "Lista de estudio terminada.";
+      studyMain.classList.add("finished-text-main");
+      studySub.textContent =
+        "Puedes volver al inicio o cambiar la selección en la pantalla principal.";
+      btnRepeatAudio.style.display = "none";
+      setBottomState("finished");
+    }
+
+    function initStudySession(mode) {
+      studyMode = mode;
+      remainingPhrases = getActivePhrases().slice();
+      totalPhrases = remainingPhrases.length;
+
+      if (totalPhrases === 0) {
+        toast.textContent =
+          "No hay frases para esa combinación de tipo de nivel y formas (revisa la selección).";
+        toast.style.color = "var(--danger)";
+        return false;
+      }
+
+      toast.textContent = "";
+      studyMain.classList.remove("finished-text-main");
+
+      showStudyScreen();
+      pickNextPhrase();
+      return true;
+    }
+
+    function startStudy(mode) {
+      initStudySession(mode);
+    }
+
+    function markAnswer(isCorrect) {
+      clearTimeout(autoTimer);
+      autoTimer = null;
+
+      if (!currentPhrase) return;
+      if (isCorrect) {
+        remainingPhrases.splice(currentIndex, 1);
+      }
+      if (remainingPhrases.length === 0) {
+        showFinishedState();
+      } else {
+        pickNextPhrase();
+      }
+    }
+
+    // Eventos de modo
+    modeEscuchar.addEventListener("click", () => startStudy("escuchar"));
+    modeTraducir.addEventListener("click", () => startStudy("traducir"));
+    modeLeer.addEventListener("click", () => startStudy("leer"));
+    modeAutomatico.addEventListener("click", () => startStudy("automatico"));
+
+    // Eventos estudio
+    btnHome.addEventListener("click", () => {
+      showSetupScreen();
+    });
+
+    btnFinishHome.addEventListener("click", () => {
+      showSetupScreen();
+    });
+
+    btnRepeatAudio.addEventListener("click", () => {
+      playAudioForCurrent();
+    });
+
+    btnReveal.addEventListener("click", () => {
+      if (!currentPhrase) return;
+      isRevealed = true;
+      setBottomState("revealed");
+      renderCardRevealed();
+    });
+
+    btnCorrect.addEventListener("click", () => {
+      markAnswer(true);
+    });
+
+    btnWrong.addEventListener("click", () => {
+      markAnswer(false);
+    });
+
+    // ---------- Atajos de teclado (solo en pantalla de estudio) ----------
+
+    document.addEventListener("keydown", (e) => {
+      // Solo si estamos en la pantalla de estudio
+      if (studyScreen.style.display === "none") return;
+      if (e.repeat) return;
+
+      // Barra espaciadora
+      if (e.key === " " || e.code === "Space") {
+        e.preventDefault();
+        if (!currentPhrase) return;
+
+        if (!isRevealed) {
+          btnReveal.click();
+        } else {
+          btnCorrect.click();
+        }
+      }
+
+      // Tecla "m" o "M" → "No la sabía" (solo si está revelada)
+      if (e.key === "m" || e.key === "M") {
+        if (!currentPhrase) return;
+        if (!isRevealed) return;
+        btnWrong.click();
+      }
+    });
+
+    // Inicializar
+    renderGrids();
+  </script>
+</body>
+</html>
