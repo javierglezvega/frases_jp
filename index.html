@@ -648,7 +648,7 @@
       const frases = [
 {jp:"今日は一時から会議があります", es:"Hoy tengo una reunión a la una", verbo: "N5", forma: "1-10", audio: "audios/001.mp3"},
 {jp:"今、忙しいですから、またあとで電話してください", es:"Estoy ocupado ahora. Llame otra vez más tarde, por favor", verbo: "N5", forma: "1-10", audio: "audios/002.mp3"},
-{jp:"机の上にリンゴが一つあります", es:"Hay una manzana en la mesa", verbo: "N5", forma: "1-10", audio: "audios/003.mp3"},
+{jp:"机の上にリンゴが一つあります", es:"Hay una manzana sobre el escritorio", verbo: "N5", forma: "1-10", audio: "audios/003.mp3"},
 {jp:"毎朝七時に起きます", es:"Me despierto a las 7 todas las mañanas", verbo: "N5", forma: "1-10", audio: "audios/004.mp3"},
 {jp:"娘は七歳です", es:"Mi hija tiene 7 años", verbo: "N5", forma: "1-10", audio: "audios/005.mp3"},
 {jp:"わたしは九週間旅行へ行きました", es:"Fui a un viaje de nueve semanas", verbo: "N5", forma: "1-10", audio: "audios/006.mp3"},
@@ -663,7 +663,7 @@
 {jp:"この時計は一万円です", es:"Este reloj cuesta diez mil yenes", verbo: "N5", forma: "11-20", audio: "audios/015.mp3"},
 {jp:"それは全部で三千円です", es:"Son tres mil yenes en total", verbo: "N5", forma: "11-20", audio: "audios/016.mp3"},
 {jp:"彼はテーブルの上に本を置きました", es:"Puso el libro sobre la mesa", verbo: "N5", forma: "11-20", audio: "audios/017.mp3"},
-{jp:"机の下に猫がいます", es:"Hay un gato debajo de la mesa", verbo: "N5", forma: "11-20", audio: "audios/018.mp3"},
+{jp:"机の下に猫がいます", es:"Hay un gato debajo del escritorio", verbo: "N5", forma: "11-20", audio: "audios/018.mp3"},
 {jp:"りんごを九つください", es:"Nueve manzanas, por favor", verbo: "N5", forma: "11-20", audio: "audios/019.mp3"},
 {jp:"私はカメラを二つ持っている", es:"Tengo dos cámaras", verbo: "N5", forma: "11-20", audio: "audios/020.mp3"},
 {jp:"彼は部屋に入りました", es:"Entró en la habitación", verbo: "N5", forma: "21-30", audio: "audios/021.mp3"},
@@ -1630,16 +1630,16 @@
       btnRepeatAudio.style.display = "none";
 
       if (studyMode === "escuchar" || studyMode === "automatico") {
-        studyMain.textContent = "Reproduciendo audio";
-        studySub.textContent = "Escucha y traduce mentalmente al español.";
+        studyMain.textContent = "Reproduciendo audio…";
+        studySub.textContent = "";
         btnRepeatAudio.style.display = "inline-flex";
         playAudioForCurrent();
       } else if (studyMode === "traducir") {
         studyMain.textContent = currentPhrase.es;
-        studySub.textContent = "Traduce mentalmente al japonés.";
+        studySub.textContent = "";
       } else if (studyMode === "leer") {
         studyMain.textContent = currentPhrase.jp;
-        studySub.textContent = "Lee y traduce mentalmente al español.";
+        studySub.textContent = "";
       }
     }
 
